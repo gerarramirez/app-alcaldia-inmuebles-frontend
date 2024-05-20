@@ -6,8 +6,9 @@ export default function Header() {
     <div>
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
         <div className="container-fluid">
+          <img id="logo" src="https://sanmarcos.gob.sv/wp-content/uploads/2022/05/LOGO-PNG-2.5.png"/>
           <Link to="/" className="navbar-brand" href="#">
-            <span className="navbar-text">React CRUD</span>
+            <span className="navbar-text">SISTEMA DE REGISTRO DE INMUEBLE</span>
           </Link>
           <button
             className="navbar-toggler"
@@ -21,17 +22,32 @@ export default function Header() {
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <Link className="nav-link" to="/">
-                  Home
+                  Inicio
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="create-user">
-                  Create User
+                  Empleado
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="show-user">
-                  Show User
+                <Link className="nav-link" to="create-usuario">
+                  Usuario
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="create-propietario">
+                  Propietario
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="create-inmueble">
+                  Inmueble
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="create-inmueble">
+                  facturación
                 </Link>
               </li>
             </ul>

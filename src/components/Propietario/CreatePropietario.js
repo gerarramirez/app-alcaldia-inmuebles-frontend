@@ -8,43 +8,54 @@ import axios from "axios";
 
 
 
-const CreateEmpleado = () => {
+const CreatePropietario = () => {
     const navigate = useNavigate();
-    const createUserApi = "http://localhost:8084/alcaldia/catalogo/empleado/create"
+    const createPropietarioApi = "http://localhost:8084/alcaldia/catalogo/propietario/create"
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [empleado, setUser] = useState({
+    const [propietario, setUser] = useState({
+        tipoDocumento: "",
+        documento: "",
         nombre: "",
-        email: "",
-        apellido: ""
+        apellido: "",
+        telefono: "",
+        correoElectronico: "",
+
     })
 
     const handelInput = (event) => {
         event.preventDefault();
         const { name, value } = event.target;
         console.log(name, value)
-        setUser({ ...empleado, [name]: value });
+        setUser({ ...propietario, [name]: value });
     }
 
     const handelSubmit = async (event) => {
         event.preventDefault();
-        console.log(empleado)
+        console.log(propietario)
         try {
             setIsLoading(true);
-            const response = await fetch(createUserApi, {
+            const response = await fetch(createPropietarioApi, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json;charset=UTF-8;',
                 },
-                body: JSON.stringify(empleado),
+                body: JSON.stringify(propietario),
             });
 
             if (response.ok) {
                 console.log('Form submitted successfully!');
-                setUser({ nombre: "", email: "", apellido: "" })
-                navigate('/create-user');
+                setUser({
+                    tipoDocumento: "",
+                    documento: "",
+                    nombre: "",
+                    apellido: "",
+                    telefono: "",
+                    correoElectronico: ""
+                })
+                navigate('/create-propietario');
             } else {
                 console.error('Form submission failed!');
             }
@@ -62,56 +73,69 @@ const CreateEmpleado = () => {
                 <div className='heading'>
                     {isLoading && <Loader />}
                     {error && <p>Error: {error}</p>}
-                    <p>Registrar Empleado</p>
+                    <p>Registrar Propietario</p>
                 </div>
                 <form onSubmit={handelSubmit}>
                     <div className="mb-3">
+                        <label for="name" className="form-label">Tipo de documento</label>
+                        <input type="text" required className="form-control" id="tipoDocumento" name="tipoDocumento" value={propietario.tipoDocumento} onChange={handelInput} />
+                    </div>
+                    <div className="mb-3">
+                        <label for="name" className="form-label">Documento</label>
+                        <input type="text" required className="form-control" id="documento" name="documento" value={propietario.documento} onChange={handelInput} />
+                    </div>
+                    <div className="mb-3">
                         <label for="name" className="form-label">Nombre</label>
-                        <input type="text" required className="form-control" id="nombre" name="nombre" value={empleado.nombre} onChange={handelInput} />
+                        <input type="text" required className="form-control" id="nombre" name="nombre" value={propietario.nombre} onChange={handelInput} />
                     </div>
                     <div className="mb-3">
                         <label for="name" className="form-label">Apellido</label>
-                        <input type="text" required className="form-control" id="apellido" name="apellido" value={empleado.apellido} onChange={handelInput} />
+                        <input type="text" required className="form-control" id="apellido" name="apellido" value={propietario.apellido} onChange={handelInput} />
+                    </div>
+                    <div className="mb-3">
+                        <label for="name" className="form-label">Telefono</label>
+                        <input type="text" required className="form-control" id="telefono" name="telefono" value={propietario.telefono} onChange={handelInput} />
                     </div>
                     <div className="mb-3 mt-3">
-                        <label for="email" className="form-label">Email</label>
-                        <input type="email" required className="form-control" id="email" name="email" value={empleado.email} onChange={handelInput} />
+                        <label for="email" className="form-label">Correo Electronico</label>
+                        <input type="email" required className="form-control" id="correoElectronico" name="correoElectronico" value={propietario.correoElectronico} onChange={handelInput} />
                     </div>
                     <button type="submit" className="btn btn-primary submit-btn">Submit</button>
                 </form>
             </div>
             <div>
-                <ShowEmpleados />
+                <ShowPropietario />
             </div>
         </div>
 
     )
 }
 
-const ShowEmpleados = () => {
-    const showEmpleadoApi = "http://localhost:8084/alcaldia/catalogo/empleado/findAll";
+const ShowPropietario = () => {
+    const showPropietarioApi = "http://localhost:8084/alcaldia/catalogo/propietario/findAll";
 
-    const [empleados, setEmpleado] = useState([]);
+    const [propietario, setPropietario] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
 
     useEffect(() => {
-        getUsers();
+        getPropietario();
     }, []);
 
-    const getUsers = () => {
+    const getPropietario = () => {
         axios
-            .get(showEmpleadoApi)
+            .get(showPropietarioApi)
             .then((res) => {
-                setEmpleado(res.data);
+                console.log(res.data);
+                setPropietario(res.data);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
 
-    if (empleados.length < 0) {
+    if (propietario.length < 0) {
         return <h1>no user found</h1>;
     } else {
         return (
@@ -122,22 +146,27 @@ const ShowEmpleados = () => {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nombre</th>
+                            <th>Tipo de documento</th>
+                            <th>Documento</th>
                             <th>Apellido</th>
-                            <th>Email</th>
+                            <th>Telefono</th>
+                            <th>Correo Electronico</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {empleados?.map((item, i) => {
+                        {propietario?.map((item, i) => {
                             return (
                                 <tr key={i + 1}>
                                     <td>{i + 1}</td>
+                                    <td>{item.tipoDocumento}</td>
+                                    <td>{item.documento}</td>
                                     <td>{item.nombre}</td>
                                     <td>{item.apellido}</td>
-                                    <td>{item.email}</td>
+                                    <td>{item.telefono}</td>
+                                    <td>{item.correoElectronico}</td>
                                     <td>
-                                        <Link to={`/edit-user/${item.id}`}>
+                                        <Link to={`/edit-propietario/${item.id}`}>
                                             <i className="fa fa-pencil" aria-hidden="true"></i>
                                         </Link>
                                     </td>
@@ -151,4 +180,4 @@ const ShowEmpleados = () => {
     }
 };
 
-export default CreateEmpleado
+export default CreatePropietario
