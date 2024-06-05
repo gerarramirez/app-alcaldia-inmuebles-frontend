@@ -4,13 +4,20 @@ import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../Common/Loader";
 import "./User.css";
 
-const EditPropietario = () => {
+const EditPropietario = (props) => {
     const [propietario, setPropietario] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const {loggedIn, setLoggedIn}  = props;
     const { id } = useParams();
     const navigate = useNavigate();
-    const getPropietarioApi = "http://localhost:8084/alcaldia/catalogo/propietario";
+    const getPropietarioApi = "http://localhost:8084/api/alcaldia/catalogo/propietario";
+
+    useEffect(() => {
+        if(!loggedIn){
+            navigate("/login");
+        }
+      }, [loggedIn]);
 
     useEffect(() => {
         getPropietario();

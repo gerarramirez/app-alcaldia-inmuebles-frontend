@@ -8,16 +8,23 @@ import axios from "axios";
 
 
 
-const CreateEmpleado = () => {
+const CreateEmpleado = (props) => {
     const navigate = useNavigate();
-    const createUserApi = "http://localhost:8084/alcaldia/catalogo/empleado/create"
+    const createUserApi = "http://localhost:8084/api/alcaldia/catalogo/empleado/create"
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const {loggedIn, setLoggedIn}  = props;
     const [empleado, setUser] = useState({
         nombre: "",
         email: "",
         apellido: ""
     })
+
+    useEffect(() => {
+        if(!loggedIn){
+            navigate("/login");
+        }
+      }, [loggedIn]);
 
     const handelInput = (event) => {
         event.preventDefault();
@@ -89,7 +96,7 @@ const CreateEmpleado = () => {
 }
 
 const ShowEmpleados = () => {
-    const showEmpleadoApi = "http://localhost:8084/alcaldia/catalogo/empleado/findAll";
+    const showEmpleadoApi = "http://localhost:8084/api/alcaldia/catalogo/empleado/findAll";
 
     const [empleados, setEmpleado] = useState([]);
     const [isLoading, setIsLoading] = useState(false);

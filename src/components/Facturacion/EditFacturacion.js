@@ -8,10 +8,11 @@ const EditPropietario = (props) => {
     const [propietario, setPropietario] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const {loggedIn, setLoggedIn}  = props;
     const { id } = useParams();
     const navigate = useNavigate();
-    const getPropietarioApi = "http://localhost:8084/api/alcaldia/catalogo/propietario";
+    const {loggedIn, setLoggedIn}  = props;
+
+    const getPropietarioApi = "http://localhost:8084/alcaldia/catalogo/propietario";
 
     useEffect(() => {
         if(!loggedIn){

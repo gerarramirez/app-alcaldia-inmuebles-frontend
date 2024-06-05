@@ -4,13 +4,20 @@ import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../Common/Loader";
 import "./User.css";
 
-const EditEmpleado = () => {
+const EditEmpleado = (props) => {
     const [empleado, setEmpleado] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const {loggedIn, setLoggedIn}  = props;
     const { id } = useParams();
     const navigate = useNavigate();
-    const getEmpleadoApi = "http://localhost:8084/alcaldia/catalogo/empleado";
+    const getEmpleadoApi = "http://localhost:8084/api/alcaldia/catalogo/empleado";
+
+    useEffect(() => {
+        if(!loggedIn){
+            navigate("/login");
+        }
+      }, [loggedIn]);
 
     useEffect(() => {
         getEmpleado();

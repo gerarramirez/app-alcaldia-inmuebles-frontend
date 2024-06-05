@@ -8,10 +8,18 @@ import axios from "axios";
 
 
 
-const CreateUsuario = () => {
+const CreateUsuario =  (props)  => {
     const navigate = useNavigate();
-    const createUsuarioApi = "http://localhost:8084/alcaldia/catalogo/usuario/create"
-    const getAllEmpleadoApi = "http://localhost:8084/alcaldia/catalogo/empleado/findALLWithoutUser"
+    const {loggedIn, setLoggedIn}  = props;
+
+    useEffect(() => {
+        if(!loggedIn){
+            navigate("/login");
+        }
+      }, [loggedIn]);
+    
+    const createUsuarioApi = "http://localhost:8084/api/alcaldia/catalogo/usuario/create"
+    const getAllEmpleadoApi = "http://localhost:8084/api/alcaldia/catalogo/empleado/findALLWithoutUser"
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [empleados, setEmpleado] = useState([{
@@ -26,6 +34,10 @@ const CreateUsuario = () => {
         empleado: ""
 
     })
+
+    console.log("estado de la session " + loggedIn);
+
+   
 
     useEffect(() => {
         getEmpleado();
@@ -126,7 +138,7 @@ const CreateUsuario = () => {
 }
 
 const ShowUsuario = () => {
-    const showUsuarioApi = "http://localhost:8084/alcaldia/catalogo/usuario/findAll";
+    const showUsuarioApi = "http://localhost:8084/api/alcaldia/catalogo/usuario/findAll";
 
     const [usuario, setUsuario] = useState([]);
     const [isLoading, setIsLoading] = useState(false);

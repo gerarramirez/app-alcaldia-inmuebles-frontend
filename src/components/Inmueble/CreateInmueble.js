@@ -8,12 +8,13 @@ import axios from "axios";
 
 
 
-const CreateInmueble = () => {
+const CreateInmueble = (props) => {
     const navigate = useNavigate();
-    const createInmuebleApi = "http://localhost:8084/alcaldia/facturacion/inmueble/create"
-    const getAllEmpleadoApi = "http://localhost:8084/alcaldia/catalogo/empleado/findAll"
+    const createInmuebleApi = "http://localhost:8084/api/alcaldia/facturacion/inmueble/create"
+    const getAllEmpleadoApi = "http://localhost:8084/api/alcaldia/catalogo/empleado/findAll"
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const {loggedIn, setLoggedIn}  = props;
     const [empleados, setEmpleado] = useState([{
         id: "",
         nombre: "",
@@ -28,6 +29,12 @@ const CreateInmueble = () => {
         precio: "",
         empleado: "",
     })
+
+    useEffect(() => {
+        if(!loggedIn){
+            navigate("/login");
+        }
+      }, [loggedIn]);
 
     useEffect(() => {
         getEmpleado();
@@ -48,11 +55,11 @@ const CreateInmueble = () => {
     const handelInput = (event) => {
         event.preventDefault();
         let { name, value } = event.target;
-        if(name == 'empleado'){
+        if(name === 'empleado'){
             value = { "id" : value}
         }
         console.log(name, value)
-        setEmpleado({ ...inmueble, [name]: value });
+        setInmueble({ ...inmueble, [name]: value });
     }
 
     const handelSubmit = async (event) => {
@@ -80,7 +87,7 @@ const CreateInmueble = () => {
                     precio: "",
                     empleado: "",
                 })
-                navigate('/create-usuario');
+                navigate('/create-inmueble');
             } else {
                 console.error('Form submission failed!');
             }
@@ -98,16 +105,20 @@ const CreateInmueble = () => {
                 <div className='heading'>
                     {isLoading && <Loader />}
                     {error && <p>Error: {error}</p>}
-                    <p>Registrar Usuario</p>
+                    <p>Registrar Inmueble</p>
                 </div>
                 <form onSubmit={handelSubmit}>
+                <div className="mb-3">
+                        <label for="name" className="form-label">Clave Catastral</label>
+                        <input type="text" required className="form-control" id="claveCatastral" name="claveCatastral" value={inmueble.claveCatastral} onChange={handelInput} />
+                    </div>
                     <div className="mb-3">
                         <label for="name" className="form-label">Dirección</label>
                         <input type="Textarea" required className="form-control" id="direccion" name="direccion" value={inmueble.direccion} onChange={handelInput} />
                     </div>
                     <div className="mb-3">
                         <label for="name" className="form-label">Tipo de Inmueble</label>
-                        <input type="number" required className="form-control" id="tipoInmueble" name="tipoInmueble" value={inmueble.tipoInmueble} onChange={handelInput} />
+                        <input type="text" required className="form-control" id="tipoInmueble" name="tipoInmueble" value={inmueble.tipoInmueble} onChange={handelInput} />
                     </div>
                     <div className="mb-3">
                         <label for="name" className="form-label">Numero de Habitaciones</label>
@@ -177,6 +188,7 @@ const ShowInmueble = () => {
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Clave Catastral</th>
                             <th>Direccion</th>
                             <th>Tipo de Inmueble</th>
                             <th>Numero de Habitaciones</th>

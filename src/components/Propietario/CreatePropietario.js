@@ -8,21 +8,25 @@ import axios from "axios";
 
 
 
-const CreatePropietario = () => {
+const CreatePropietario = (props) => {
     const navigate = useNavigate();
-    const createPropietarioApi = "http://localhost:8084/alcaldia/catalogo/propietario/create"
+    const createPropietarioApi = "http://localhost:8084/api/alcaldia/catalogo/propietario/create"
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const {loggedIn, setLoggedIn}  = props;
     const [propietario, setUser] = useState({
         tipoDocumento: "",
         documento: "",
         nombre: "",
         apellido: "",
         telefono: "",
-        correoElectronico: "",
-
+        email: "",
     })
-
+    useEffect(() => {
+        if(!loggedIn){
+            navigate("/login");
+        }
+      }, [loggedIn]);
     const handelInput = (event) => {
         event.preventDefault();
         const { name, value } = event.target;
@@ -53,7 +57,7 @@ const CreatePropietario = () => {
                     nombre: "",
                     apellido: "",
                     telefono: "",
-                    correoElectronico: ""
+                    email: ""
                 })
                 navigate('/create-propietario');
             } else {
@@ -98,7 +102,7 @@ const CreatePropietario = () => {
                     </div>
                     <div className="mb-3 mt-3">
                         <label for="email" className="form-label">Correo Electronico</label>
-                        <input type="email" required className="form-control" id="correoElectronico" name="correoElectronico" value={propietario.correoElectronico} onChange={handelInput} />
+                        <input type="email" required className="form-control" id="email" name="email" value={propietario.email} onChange={handelInput} />
                     </div>
                     <button type="submit" className="btn btn-primary submit-btn">Submit</button>
                 </form>
@@ -164,7 +168,7 @@ const ShowPropietario = () => {
                                     <td>{item.nombre}</td>
                                     <td>{item.apellido}</td>
                                     <td>{item.telefono}</td>
-                                    <td>{item.correoElectronico}</td>
+                                    <td>{item.email}</td>
                                     <td>
                                         <Link to={`/edit-propietario/${item.id}`}>
                                             <i className="fa fa-pencil" aria-hidden="true"></i>

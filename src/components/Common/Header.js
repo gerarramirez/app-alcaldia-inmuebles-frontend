@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Common.css";
-export default function Header() {
+const Header =(props) => {
+  const {loggedIn, setLoggedIn} = props;
+  
+
+
   return (
     <div>
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -21,34 +25,58 @@ export default function Header() {
           <div className="collapse navbar-collapse" id="mynavbar">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
+                {
+                loggedIn?
                 <Link className="nav-link" to="/">
                   Inicio
                 </Link>
+                : <div></div>  
+              }
               </li>
               <li className="nav-item">
+              {
+                loggedIn?
                 <Link className="nav-link" to="create-user">
                   Empleado
                 </Link>
+                : <div></div>  
+              }
               </li>
               <li className="nav-item">
+              {
+                loggedIn?
                 <Link className="nav-link" to="create-usuario">
                   Usuario
                 </Link>
+                : <div></div>  
+              }
               </li>
               <li className="nav-item">
+              {
+                loggedIn?
                 <Link className="nav-link" to="create-propietario">
                   Propietario
                 </Link>
+                 : <div></div>  
+                }
               </li>
               <li className="nav-item">
+                {
+                loggedIn?
                 <Link className="nav-link" to="create-inmueble">
                   Inmueble
                 </Link>
+                 : <div></div>  
+                }
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="create-inmueble">
+                {
+                loggedIn?
+                <Link className="nav-link" to="create-facturacion">
                   facturación
                 </Link>
+                 : <div></div>  
+                }
               </li>
             </ul>
           </div>
@@ -57,3 +85,4 @@ export default function Header() {
     </div>
   );
 }
+export default Header;
